@@ -30,6 +30,9 @@ func (e *Books) SearchByIso(iso string, limit int) *[]*loader.EmissionYear {
 		data := (*ret)
 		return &data
 	} else {
+		if limit == 0 {
+			limit = len(*ret)
+		}
 		data := (*ret)[len(*ret)-limit:]
 		return &data
 	}
