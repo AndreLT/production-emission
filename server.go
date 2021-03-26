@@ -33,5 +33,6 @@ func main() {
 		fmt.Fprintln(w, "api v1")
 	})
 	api.HandleFunc("/country/{iso}", SearchByIso).Methods(http.MethodGet)
+	api.HandleFunc("/collection", SearchCollection).Methods(http.MethodGet)
 	log.Fatalln(http.ListenAndServe(":8080", r))
 }
