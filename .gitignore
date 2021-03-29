@@ -12,3 +12,5 @@
 *.out
 
 .idea
+*_test.go
+*_test.csv

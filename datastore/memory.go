@@ -26,14 +26,14 @@ func (e *Books) SearchByIso(iso string, limit int) *[]*loader.EmissionYear {
 		return strings.Contains(strings.ToLower(v.IsoCode), strings.ToLower(iso))
 	})
 
-	if limit > len(*ret) {
-		data := (*ret)
+	data := (*ret)
+	if limit > len(data) {
 		return &data
 	} else {
 		if limit == 0 {
-			limit = len(*ret)
+			limit = len(data)
 		}
-		data := (*ret)[len(*ret)-limit:]
+		data = data[len(data)-limit:]
 		return &data
 	}
 }
