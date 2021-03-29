@@ -33,7 +33,7 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 	r := mux.NewRouter()
-	log.Println("bookdata api")
+	log.Println("production and emission api")
 	api := r.PathPrefix("/api/v1").Subrouter()
 	api.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "api v1")
