@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"production-emission/datastore"
 	"time"
 
@@ -26,6 +27,11 @@ func init() {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	port = ":" + string(port)
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 	r := mux.NewRouter()
 	log.Println("bookdata api")
 	api := r.PathPrefix("/api/v1").Subrouter()
@@ -34,5 +40,5 @@ func main() {
 	})
 	api.HandleFunc("/country/{iso}", SearchByIso).Methods(http.MethodGet)
 	api.HandleFunc("/collection", SearchCollection).Methods(http.MethodGet)
-	log.Fatalln(http.ListenAndServe(":8080", r))
+	log.Fatalln(http.ListenAndServe(port, r))
 }
