@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"production-emission/datastore"
+	"runtime"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -26,6 +27,20 @@ func init() {
 	books.Initialize()
 }
 
+func PrintMemUsage() {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	// For info on each, see: https://golang.org/pkg/runtime/#MemStats
+	fmt.Printf("Alloc = %v MiB", bToMb(m.Alloc))
+	fmt.Printf("\tTotalAlloc = %v MiB", bToMb(m.TotalAlloc))
+	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
+	fmt.Printf("\tNumGC = %v\n", m.NumGC)
+}
+
+func bToMb(b uint64) uint64 {
+	return b / 1024 / 1024
+}
+
 func main() {
 	port := os.Getenv("PORT")
 	port = ":" + string(port)
@@ -34,6 +49,7 @@ func main() {
 	}
 	r := mux.NewRouter()
 	log.Println("production and emission api")
+	PrintMemUsage()
 	api := r.PathPrefix("/api/v1").Subrouter()
 	api.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "api v1")

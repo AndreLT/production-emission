@@ -4,64 +4,83 @@ import (
 	"encoding/csv"
 	"io"
 	"log"
+	"strconv"
 )
 
 type EmissionYear struct {
-	IsoCode           string `json:"iso_code"`
-	Country           string `json:"country"`
-	Year              string `json:"year"`
-	Co2               string `json:"co2"`
-	Co2Growth         string `json:"co2_growth_prct"`
-	Co2GrowthAbs      string `json:"co2_growth_abs"`
-	ConsCo2           string `json:"consumption_co2"`
-	TradeCo2          string `json:"trade_co2"`
-	TradeCo2Share     string `json:"trade_co2_share"`
-	Co2PC             string `json:"co2_per_capita"`
-	ConsCo2PC         string `json:"consumption_co2_per_capita"`
-	ShareGbCo2        string `json:"share_global_co2"`
-	ShareGbCumCo2     string `json:"share_global_cumulative_co2"`
-	CumCo2            string `json:"cumulative_co2"`
-	Co2PGpd           string `json:"co2_per_gdp"`
-	ConsCo2PGpd       string `json:"consumption_co2_per_gdp"`
-	Co2PUEnergy       string `json:"co2_per_unit_energy"`
-	CementCo2         string `json:"cement_co2"`
-	CoalCo2           string `json:"coal_co2"`
-	FlaringCo2        string `json:"flaring_co2"`
-	GasCo2            string `json:"gas_co2"`
-	OilCo2            string `json:"oil_co2"`
-	OtherCo2          string `json:"other_industry_co2"`
-	CementCo2PC       string `json:"cement_co2_per_capita"`
-	CoalCo2PC         string `json:"coal_co2_per_capita"`
-	FlaringCo2PC      string `json:"flaring_co2_per_capita"`
-	GasCo2PC          string `json:"gas_co2_per_capita"`
-	OilCo2PC          string `json:"oil_co2_per_capita"`
-	OtherCo2PC        string `json:"other_co2_per_capita"`
-	ShareGbCoalCo2    string `json:"share_global_coal_co2"`
-	ShareGbOilCo2     string `json:"share_global_oil_co2"`
-	ShareGbGasCo2     string `json:"share_global_gas_co2"`
-	ShareGbFlaringCo2 string `json:"share_global_flaring_co2"`
-	ShareGbCementCo2  string `json:"share_global_cement_co2"`
-	CumCoalCo2        string `json:"cumulative_coal_co2"`
-	CumOilCo2         string `json:"cumulative_oil_co2"`
-	CumGasCo2         string `json:"cumulative_gas_co2"`
-	CumFlaringCo2     string `json:"cumulative_flaring_co2"`
-	CumCementCo2      string `json:"cumulative_cement_co2"`
-	ShareGbCumCoal    string `json:"share_global_cumulative_coal_co2"`
-	ShareGbCumOil     string `json:"share_global_cumulative_oil_co2"`
-	ShareGbCumGas     string `json:"share_global_cumulative_gas_co2"`
-	ShareGbCumFlaring string `json:"share_global_cumulative_flaring_co2"`
-	ShareGbCumCement  string `json:"share_global_cumulative_cement_co2"`
-	TotalGhg          string `json:"total_ghg"`
-	GhgPC             string `json:"ghg_per_capita"`
-	Methane           string `json:"methane"`
-	MethanePC         string `json:"methane_per_capita"`
-	NitrousOxide      string `json:"nitrous_oxide"`
-	NitrousOxidePC    string `json:"nitrous_oxide_per_capita"`
-	PrimaryEnergyCons string `json:"primary_energy_consumption"`
-	EnergyPC          string `json:"energy_per_capita"`
-	EnergyPGpd        string `json:"energy_per_gdp"`
-	Population        string `json:"population"`
-	Gpd               string `json:"gdp"`
+	IsoCode           string  `json:"iso_code"`
+	Country           string  `json:"country"`
+	Year              int     `json:"year"`
+	Co2               float64 `json:"co2"`
+	Co2Growth         float64 `json:"co2_growth_prct"`
+	Co2GrowthAbs      float64 `json:"co2_growth_abs"`
+	ConsCo2           float64 `json:"consumption_co2"`
+	TradeCo2          float64 `json:"trade_co2"`
+	TradeCo2Share     float64 `json:"trade_co2_share"`
+	Co2PC             float64 `json:"co2_per_capita"`
+	ConsCo2PC         float64 `json:"consumption_co2_per_capita"`
+	ShareGbCo2        float64 `json:"share_global_co2"`
+	ShareGbCumCo2     float64 `json:"share_global_cumulative_co2"`
+	CumCo2            float64 `json:"cumulative_co2"`
+	Co2PGpd           float64 `json:"co2_per_gdp"`
+	ConsCo2PGpd       float64 `json:"consumption_co2_per_gdp"`
+	Co2PUEnergy       float64 `json:"co2_per_unit_energy"`
+	CementCo2         float64 `json:"cement_co2"`
+	CoalCo2           float64 `json:"coal_co2"`
+	FlaringCo2        float64 `json:"flaring_co2"`
+	GasCo2            float64 `json:"gas_co2"`
+	OilCo2            float64 `json:"oil_co2"`
+	OtherCo2          float64 `json:"other_industry_co2"`
+	CementCo2PC       float64 `json:"cement_co2_per_capita"`
+	CoalCo2PC         float64 `json:"coal_co2_per_capita"`
+	FlaringCo2PC      float64 `json:"flaring_co2_per_capita"`
+	GasCo2PC          float64 `json:"gas_co2_per_capita"`
+	OilCo2PC          float64 `json:"oil_co2_per_capita"`
+	OtherCo2PC        float64 `json:"other_co2_per_capita"`
+	ShareGbCoalCo2    float64 `json:"share_global_coal_co2"`
+	ShareGbOilCo2     float64 `json:"share_global_oil_co2"`
+	ShareGbGasCo2     float64 `json:"share_global_gas_co2"`
+	ShareGbFlaringCo2 float64 `json:"share_global_flaring_co2"`
+	ShareGbCementCo2  float64 `json:"share_global_cement_co2"`
+	CumCoalCo2        float64 `json:"cumulative_coal_co2"`
+	CumOilCo2         float64 `json:"cumulative_oil_co2"`
+	CumGasCo2         float64 `json:"cumulative_gas_co2"`
+	CumFlaringCo2     float64 `json:"cumulative_flaring_co2"`
+	CumCementCo2      float64 `json:"cumulative_cement_co2"`
+	ShareGbCumCoal    float64 `json:"share_global_cumulative_coal_co2"`
+	ShareGbCumOil     float64 `json:"share_global_cumulative_oil_co2"`
+	ShareGbCumGas     float64 `json:"share_global_cumulative_gas_co2"`
+	ShareGbCumFlaring float64 `json:"share_global_cumulative_flaring_co2"`
+	ShareGbCumCement  float64 `json:"share_global_cumulative_cement_co2"`
+	TotalGhg          float64 `json:"total_ghg"`
+	GhgPC             float64 `json:"ghg_per_capita"`
+	Methane           float64 `json:"methane"`
+	MethanePC         float64 `json:"methane_per_capita"`
+	NitrousOxide      float64 `json:"nitrous_oxide"`
+	NitrousOxidePC    float64 `json:"nitrous_oxide_per_capita"`
+	PrimaryEnergyCons float64 `json:"primary_energy_consumption"`
+	EnergyPC          float64 `json:"energy_per_capita"`
+	EnergyPGpd        float64 `json:"energy_per_gdp"`
+	Population        float64 `json:"population"`
+	Gpd               float64 `json:"gdp"`
+}
+
+func ConvertToInt(s string) int {
+	if s == "" {
+		return -1
+	} else {
+		converted, _ := strconv.Atoi(s)
+		return converted
+	}
+}
+
+func ConvertToFloat(s string) float64 {
+	if s == "" {
+		return -1
+	} else {
+		converted, _ := strconv.ParseFloat(s, 64)
+		return converted
+	}
 }
 
 func LoadData(r io.Reader) *[]*EmissionYear {
@@ -82,59 +101,59 @@ func LoadData(r io.Reader) *[]*EmissionYear {
 		year := &EmissionYear{
 			IsoCode:           row[0],
 			Country:           row[1],
-			Year:              row[2],
-			Co2:               row[3],
-			Co2Growth:         row[4],
-			Co2GrowthAbs:      row[5],
-			ConsCo2:           row[6],
-			TradeCo2:          row[7],
-			TradeCo2Share:     row[8],
-			Co2PC:             row[9],
-			ConsCo2PC:         row[10],
-			ShareGbCo2:        row[11],
-			ShareGbCumCo2:     row[12],
-			CumCo2:            row[13],
-			Co2PGpd:           row[14],
-			ConsCo2PGpd:       row[15],
-			Co2PUEnergy:       row[16],
-			CementCo2:         row[17],
-			CoalCo2:           row[18],
-			FlaringCo2:        row[19],
-			GasCo2:            row[20],
-			OilCo2:            row[21],
-			OtherCo2:          row[22],
-			CementCo2PC:       row[23],
-			CoalCo2PC:         row[24],
-			FlaringCo2PC:      row[25],
-			GasCo2PC:          row[26],
-			OilCo2PC:          row[27],
-			OtherCo2PC:        row[28],
-			ShareGbCoalCo2:    row[29],
-			ShareGbOilCo2:     row[30],
-			ShareGbGasCo2:     row[31],
-			ShareGbFlaringCo2: row[32],
-			ShareGbCementCo2:  row[33],
-			CumCoalCo2:        row[34],
-			CumOilCo2:         row[35],
-			CumGasCo2:         row[36],
-			CumFlaringCo2:     row[37],
-			CumCementCo2:      row[38],
-			ShareGbCumCoal:    row[39],
-			ShareGbCumOil:     row[40],
-			ShareGbCumGas:     row[41],
-			ShareGbCumFlaring: row[42],
-			ShareGbCumCement:  row[43],
-			TotalGhg:          row[44],
-			GhgPC:             row[45],
-			Methane:           row[46],
-			MethanePC:         row[47],
-			NitrousOxide:      row[48],
-			NitrousOxidePC:    row[49],
-			PrimaryEnergyCons: row[50],
-			EnergyPC:          row[51],
-			EnergyPGpd:        row[52],
-			Population:        row[53],
-			Gpd:               row[54],
+			Year:              ConvertToInt(row[2]),
+			Co2:               ConvertToFloat(row[3]),
+			Co2Growth:         ConvertToFloat(row[4]),
+			Co2GrowthAbs:      ConvertToFloat(row[5]),
+			ConsCo2:           ConvertToFloat(row[6]),
+			TradeCo2:          ConvertToFloat(row[7]),
+			TradeCo2Share:     ConvertToFloat(row[8]),
+			Co2PC:             ConvertToFloat(row[9]),
+			ConsCo2PC:         ConvertToFloat(row[10]),
+			ShareGbCo2:        ConvertToFloat(row[11]),
+			ShareGbCumCo2:     ConvertToFloat(row[12]),
+			CumCo2:            ConvertToFloat(row[13]),
+			Co2PGpd:           ConvertToFloat(row[14]),
+			ConsCo2PGpd:       ConvertToFloat(row[15]),
+			Co2PUEnergy:       ConvertToFloat(row[16]),
+			CementCo2:         ConvertToFloat(row[17]),
+			CoalCo2:           ConvertToFloat(row[18]),
+			FlaringCo2:        ConvertToFloat(row[19]),
+			GasCo2:            ConvertToFloat(row[20]),
+			OilCo2:            ConvertToFloat(row[21]),
+			OtherCo2:          ConvertToFloat(row[22]),
+			CementCo2PC:       ConvertToFloat(row[23]),
+			CoalCo2PC:         ConvertToFloat(row[24]),
+			FlaringCo2PC:      ConvertToFloat(row[25]),
+			GasCo2PC:          ConvertToFloat(row[26]),
+			OilCo2PC:          ConvertToFloat(row[27]),
+			OtherCo2PC:        ConvertToFloat(row[28]),
+			ShareGbCoalCo2:    ConvertToFloat(row[29]),
+			ShareGbOilCo2:     ConvertToFloat(row[30]),
+			ShareGbGasCo2:     ConvertToFloat(row[31]),
+			ShareGbFlaringCo2: ConvertToFloat(row[32]),
+			ShareGbCementCo2:  ConvertToFloat(row[33]),
+			CumCoalCo2:        ConvertToFloat(row[34]),
+			CumOilCo2:         ConvertToFloat(row[35]),
+			CumGasCo2:         ConvertToFloat(row[36]),
+			CumFlaringCo2:     ConvertToFloat(row[37]),
+			CumCementCo2:      ConvertToFloat(row[38]),
+			ShareGbCumCoal:    ConvertToFloat(row[39]),
+			ShareGbCumOil:     ConvertToFloat(row[40]),
+			ShareGbCumGas:     ConvertToFloat(row[41]),
+			ShareGbCumFlaring: ConvertToFloat(row[42]),
+			ShareGbCumCement:  ConvertToFloat(row[43]),
+			TotalGhg:          ConvertToFloat(row[44]),
+			GhgPC:             ConvertToFloat(row[45]),
+			Methane:           ConvertToFloat(row[46]),
+			MethanePC:         ConvertToFloat(row[47]),
+			NitrousOxide:      ConvertToFloat(row[48]),
+			NitrousOxidePC:    ConvertToFloat(row[49]),
+			PrimaryEnergyCons: ConvertToFloat(row[50]),
+			EnergyPC:          ConvertToFloat(row[51]),
+			EnergyPGpd:        ConvertToFloat(row[52]),
+			Population:        ConvertToFloat(row[53]),
+			Gpd:               ConvertToFloat(row[54]),
 		}
 
 		if err != nil {
